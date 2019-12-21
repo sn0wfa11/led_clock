@@ -9,7 +9,7 @@ try:
     import signal
     from random import randint
 
-    from lib.led_strip import *
+    from strip_lib.led_strip import *
 except Exception as err:
     print >> sys.stderr, err
     sys.exit(1)
