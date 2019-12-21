@@ -14,7 +14,7 @@
 case "$1" in
   start)
     echo "Starting led_clock"
-    /root/led_clock/ledclockworker &
+    /root/git/led_clock/code/ledclockworker &
     ;;
   stop)
     echo "Stopping led_clock"
