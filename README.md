@@ -3,19 +3,29 @@
 # UNDER CONSTRUCTION
 
 ## Instructions
+- SSH into the Pi Zero as root or `sudo su`.  For neopixel to work, it must be ran as root.
+
 ### Install Dependencies
 ```
 apt install -y git
 pip3 install rpi_ws281x adafruit-circuitpython-neopixel
 ```
 
-### Clone and install service
+### Clone git repo
 ```
 mkdir git
 cd git
 git clone https://github.com/sn0wfa11/led_clock
-ln -s /root/git/led_clock/code/led_clock /etc/init.d/led_clock
 ```
+
+### Make symbolic Link to the service
+`ln -s /root/git/led_clock/code/led_clock /etc/init.d/led_clock`
+
+### Start the clock service
+`/etc/init.d/led_clock start`
+
+### Set service to start on boot
+`update-rc.d led_clock defaults`
 
 ## Parts
 ### LED Strip
