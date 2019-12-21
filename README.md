@@ -27,6 +27,23 @@ git clone https://github.com/sn0wfa11/led_clock
 ### Set service to start on boot
 `update-rc.d led_clock defaults`
 
+### Setup update cron job
+- As root
+
+`crontab -e`
+
+- If there is no crontab for root, it will have you select an editor. Nano is the easiest to use.
+- Paste the following in as the last line in the crontab file:
+
+`0 0 * * 0 /root/git/led_clock/update.sh`
+
+- Exit and Save in Nano
+```
+Control+X
+Y
+<Enter>
+```
+
 ## Parts
 ### LED Strip
 https://www.amazon.com/gp/product/B01MG49QKD
