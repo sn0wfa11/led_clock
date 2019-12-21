@@ -1,0 +1,8 @@
+#!/bin/bash
+
+x=1
+while [ $x -eq 1 ]
+do
+  if ! pgrep -f led_clock.py > /dev/null; then /root/led_clock/led_clock.py ; fi
+  sleep 30
+done
