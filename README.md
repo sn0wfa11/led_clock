@@ -28,7 +28,9 @@ git clone https://github.com/sn0wfa11/led_clock
 `update-rc.d led_clock defaults`
 
 ### Setup update cron job
-- As root
+The update script will stop the clock at midnight on Sundays, pull any updates from this repo, then start the clock again.
+
+**Do this as root**
 
 `crontab -e`
 
@@ -43,6 +45,10 @@ Control+X
 Y
 <Enter>
 ```
+
+You can change the time that this executes by changing the crontab entry. See this link for assistance.
+
+https://crontab.guru/
 
 ## Parts
 ### LED Strip
