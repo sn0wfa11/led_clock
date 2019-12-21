@@ -3,6 +3,13 @@
 # UNDER CONSTRUCTION
 
 ## Instructions
+### Install Dependencies
+```
+apt install -y git
+pip3 install rpi_ws281x adafruit-circuitpython-neopixel
+```
+
+### Clone and install service
 ```
 mkdir git
 cd git
