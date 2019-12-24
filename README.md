@@ -3,7 +3,7 @@
 # UNDER CONSTRUCTION
 
 ## Instructions
-- SSH into the Pi Zero as root or `sudo su`.  For neopixel to work, it must be ran as root.
+- **SSH into the Pi Zero as root or `sudo su`.  For neopixel to work, it must be ran as root.**
 
 ### Install Dependencies
 ```
