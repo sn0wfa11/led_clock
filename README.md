@@ -7,7 +7,7 @@
 
 ### Install Dependencies
 ```
-apt install -y git
+apt install -y git python3-pip
 pip3 install rpi_ws281x adafruit-circuitpython-neopixel
 ```
 
