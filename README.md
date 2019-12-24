@@ -13,8 +13,8 @@ pip3 install rpi_ws281x adafruit-circuitpython-neopixel
 
 ### Clone git repo
 ```
-mkdir git
-cd git
+mkdir -p /root/git
+cd /root/git
 git clone https://github.com/sn0wfa11/led_clock
 ```
 
