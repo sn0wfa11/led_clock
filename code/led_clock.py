@@ -22,7 +22,7 @@ BRIGHTNESS = 0.8
 
 global origin, direction
 origin = 30
-clockwise = True
+direction = 1
 
 ## Clock Colors
 H_HAND = GREEN
@@ -51,7 +51,12 @@ def get_time():
   return (hours, minutes, seconds)
 
 def shift(pixel):
-    return (pixel + (STRIP_SIZE // 2)) % STRIP_SIZE
+    out_pixel = (pixel + origin) % STRIP_SIZE
+    if direction == 2:
+        return (STRIP_SIZE - out_pixel) % STRIP_SIZE
+    else:
+        return out_pixel
+    #return (pixel + (STRIP_SIZE // 2)) % STRIP_SIZE
 
 def show_time(strip):
     clear(strip)
@@ -141,8 +146,8 @@ def parse_args(args, parser):
 # Ref to main function
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "3D Printed LED Clock.")
-    parser.add_argument("-o", "--origin", type = int, help = "Origin Pixel - ie twelve-o-clock position. Default = 30")
-    parser.add_argument("-d", "--direction", type = int, choices = [1, 2], help = "Pixel direction 1 = positive, 2 = negative. Switch if you clock is going the wrong way. Default = 1")
+    parser.add_argument("-o", "--origin", type = int, help = "Origin Pixel - ie. The twelve-o-clock position. Default = 30")
+    parser.add_argument("-d", "--direction", type = int, choices = [1, 2], help = "Pixel direction: 1 = positive, 2 = negative. Switch if your clock is going the wrong way. Default = 1")
 
     args = parser.parse_args()
     parse_args(args, parser)
