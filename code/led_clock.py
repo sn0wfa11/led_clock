@@ -7,6 +7,7 @@ try:
     import subprocess as sub
     import sys
     import signal
+    import argparse
     from random import randint
 
     from strip_lib.led_strip import *
@@ -18,6 +19,10 @@ STRIP_SIZE = 60
 PI_PIN = board.D18
 ORDER = neopixel.GRB
 BRIGHTNESS = 0.8
+
+global origin, direction
+origin = 30
+clockwise = True
 
 ## Clock Colors
 H_HAND = GREEN
@@ -109,7 +114,7 @@ def rainbow_fill_flash_chime(strip):
     flash_bang(strip, WHITE)
 
 def fireworks(strip, color):
-    shoot_up_tail(clock, color, RED)
+    shoot_up_tail(strip, color, RED)
     fill_down(strip, color)
     sparkle_out(strip, color)
 
@@ -124,13 +129,27 @@ def run_clock(strip):
     while True:
         show_time(strip)
 
+def parse_args(args, parser):
+    global origin, direction
+
+    if args.origin:
+        origin = args.origin
+
+    if args.direction:
+        direction = args.direction
+
 # Ref to main function
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description = "3D Printed LED Clock.")
+    parser.add_argument("-o", "--origin", type = int, help = "Origin Pixel - ie twelve-o-clock position. Default = 30")
+    parser.add_argument("-d", "--direction", type = int, choices = [1, 2], help = "Pixel direction 1 = positive, 2 = negative. Switch if you clock is going the wrong way. Default = 1")
+
+    args = parser.parse_args()
+    parse_args(args, parser)
+
     try:
         clock = neopixel.NeoPixel(PI_PIN, STRIP_SIZE, brightness=BRIGHTNESS, auto_write=False, pixel_order=ORDER)
         run_clock(clock)
-        #test(clock)
-        
     except KeyboardInterrupt:
         print("\n\n[*] Exiting...")
         close_strip(clock)
