@@ -20,9 +20,10 @@ PI_PIN = board.D18
 ORDER = neopixel.GRB
 BRIGHTNESS = 0.8
 
-global origin, direction
-origin = 30 # Set the default 12-o-clock position
-direction = 1 # Set the default direction - 1 = 0 -> length, 2 = length -> 0
+global ORIGIN, DIRECTION, TEST
+ORIGIN = 30 # Set the default 12-o-clock position
+DIRECTION = 1 # Set the default direction - 1 = 0 -> length, 2 = length -> 0
+TEST = 0
 
 ## Clock Colors
 H_HAND = GREEN
@@ -52,10 +53,10 @@ def get_time():
   seconds = int(time_raw[2])
   return (hours, minutes, seconds)
 
-## Adjust clock based on origin pixel and clock direction
+## Adjust clock based on ORIGIN pixel and clock direction
 def shift(pixel):
-    out_pixel = (pixel + origin) % STRIP_SIZE
-    if direction == 2:
+    out_pixel = (pixel + ORIGIN) % STRIP_SIZE
+    if DIRECTION == 2:
         return (STRIP_SIZE - out_pixel) % STRIP_SIZE
     else:
         return out_pixel
@@ -107,8 +108,20 @@ def full_match(strip, pixel):
 
 ## Main clock loop
 def run_clock(strip):
-    while True:
-        show_time(strip)
+    if TEST == 1:
+        test1(strip)
+    else:
+        while True:
+            show_time(strip)
+
+### Testing Functions
+def test1(strip):
+    stagger_chase_clockwise(strip, RED, 5, 5)
+    stagger_chase_counterclockwise(strip, RED, 5, 5)
+    time.sleep(1)
+    color_chase(strip, BLUE, wait = 0.01)
+    time.sleep(2)
+    close_strip(strip)
 
 ### Hour Chimes
 
@@ -133,36 +146,31 @@ def fireworks(strip, color):
     fill_down(strip, color)
     sparkle_out(strip, color)
 
-def test(strip):
-    stagger_chase_clockwise(strip, RED, 5, 5)
-    stagger_chase_counterclockwise(strip, RED, 5, 5)
-    time.sleep(1)
-    color_chase(strip, BLUE, wait = 0.01)
-    time.sleep(2)
-    close_strip(strip)
-
 def parse_args(args, parser):
-    global origin, direction
+    global ORIGIN, DIRECTION, TEST
 
     if args.origin:
-        origin = args.origin
+        ORIGIN = args.origin
 
     if args.direction:
-        direction = args.direction
+        DIRECTION = args.direction
+
+    if args.test:
+        TEST = args.test
 
 # Ref to main function
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "3D Printed LED Clock.")
     parser.add_argument("-o", "--origin", type = int, help = "Origin Pixel - ie. The twelve-o-clock position. Default = 30")
     parser.add_argument("-d", "--direction", type = int, choices = [1, 2], help = "Pixel direction: 1 = positive, 2 = negative. Switch if your clock is going the wrong way. Default = 1")
+    parser.add_argument("-t", "--test", type = int, help = "Test Cycle - Testing only.")
 
     args = parser.parse_args()
     parse_args(args, parser)
 
     try:
         clock = neopixel.NeoPixel(PI_PIN, STRIP_SIZE, brightness=BRIGHTNESS, auto_write=False, pixel_order=ORDER)
-        #run_clock(clock)
-        test(clock)
+        run_clock(clock)
     except KeyboardInterrupt:
         print("\n\n[*] Exiting...")
         close_strip(clock)
