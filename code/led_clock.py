@@ -21,8 +21,8 @@ ORDER = neopixel.GRB
 BRIGHTNESS = 0.8
 
 global origin, direction
-origin = 30
-direction = 1
+origin = 30 # Set the default 12-o-clock position
+direction = 1 # Set the default direction - 1 = 0 -> length, 2 = length -> 0
 
 ## Clock Colors
 H_HAND = GREEN
@@ -41,7 +41,9 @@ def sigterm_handler(signal, frame):
 
 signal.signal(signal.SIGTERM, sigterm_handler)
 
-## Clock Functions
+### Clock Functions
+
+## Get time from OS
 def get_time():
   out, error = sub.Popen(["date +'%I %M %S'"], stdout=sub.PIPE, stderr=sub.PIPE, shell=True).communicate()
   time_raw = out.decode('utf-8').strip().split(' ')
@@ -50,14 +52,15 @@ def get_time():
   seconds = int(time_raw[2])
   return (hours, minutes, seconds)
 
+## Adjust clock based on origin pixel and clock direction
 def shift(pixel):
     out_pixel = (pixel + origin) % STRIP_SIZE
     if direction == 2:
         return (STRIP_SIZE - out_pixel) % STRIP_SIZE
     else:
         return out_pixel
-    #return (pixel + (STRIP_SIZE // 2)) % STRIP_SIZE
 
+## Show the time on the clock
 def show_time(strip):
     clear(strip)
     hours, minutes, seconds = get_time()
@@ -102,7 +105,14 @@ def min_sec_match(strip, pixel):
 def full_match(strip, pixel):
     strip[shift(pixel)] = FULL_MATCH
 
-## Hour Chimes
+## Main clock loop
+def run_clock(strip):
+    while True:
+        show_time(strip)
+
+### Hour Chimes
+
+## Select random hour chime
 def random_hour_chime(strip):
     clear(strip)
     chime_count = 3
@@ -129,10 +139,6 @@ def test(strip):
     stagger_chase_counterclockwise(strip, RED, 5, 5)
     time.sleep(2)
     close_strip(strip)
-
-def run_clock(strip):
-    while True:
-        show_time(strip)
 
 def parse_args(args, parser):
     global origin, direction
