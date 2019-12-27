@@ -134,9 +134,10 @@ def fireworks(strip, color):
     sparkle_out(strip, color)
 
 def test(strip):
-    #fireworks(strip, rand_color())
     stagger_chase_clockwise(strip, RED, 5, 5)
     stagger_chase_counterclockwise(strip, RED, 5, 5)
+    time.sleep(1)
+    color_chase(strip, BLUE, wait = 0.01)
     time.sleep(2)
     close_strip(strip)
 
@@ -160,7 +161,8 @@ if __name__ == "__main__":
 
     try:
         clock = neopixel.NeoPixel(PI_PIN, STRIP_SIZE, brightness=BRIGHTNESS, auto_write=False, pixel_order=ORDER)
-        run_clock(clock)
+        #run_clock(clock)
+        test(clock)
     except KeyboardInterrupt:
         print("\n\n[*] Exiting...")
         close_strip(clock)
