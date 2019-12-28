@@ -119,7 +119,7 @@ def run_clock(strip):
 ### Testing Functions
 def test1(strip):
     color_chase(strip, BLUE, wait = 0.01)
-    color_chase(strip, RED, wait = 0.01)
+    color_chase(strip, RED, wait = 0.01, direction = 2)
     time.sleep(2)
     close_strip(strip)
 
@@ -174,6 +174,7 @@ if __name__ == "__main__":
     try:
         clock = neopixel.NeoPixel(PI_PIN, STRIP_SIZE, brightness=BRIGHTNESS, auto_write=False, pixel_order=ORDER)
         run_clock(clock)
+        close_strip(clock)
     except KeyboardInterrupt:
         print("\n\n[*] Exiting...")
         close_strip(clock)
