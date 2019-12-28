@@ -130,7 +130,7 @@ def test1(strip):
     close_strip(strip)
 
 def test2(strip):
-    rainbow_fill_flash_chime(strip):
+    rainbow_fill_flash_chime(strip)
 
 ### Hour Chimes
 
