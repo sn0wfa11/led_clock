@@ -110,18 +110,21 @@ def full_match(strip, pixel):
 def run_clock(strip):
     if TEST == 1:
         test1(strip)
+    if TEST == 2:
+        test2(strip)
     else:
         while True:
             show_time(strip)
 
 ### Testing Functions
 def test1(strip):
-    stagger_chase_clockwise(strip, RED, 5, 5)
-    stagger_chase_counterclockwise(strip, RED, 5, 5)
-    time.sleep(1)
     color_chase(strip, BLUE, wait = 0.01)
+    color_chase(strip, RED, wait = 0.01)
     time.sleep(2)
     close_strip(strip)
+
+def test2(strip):
+    fireworks(strip, GREEN)
 
 ### Hour Chimes
 
