@@ -148,7 +148,6 @@ def stagger_chase_counterclockwise(strip, color, seperation = 3, iterations = 2,
             strip.show()
             time.sleep(wait)
 
-        
 def color_chase(strip, color, wait = 0.01, hold = 0.5, direction = 1):
     length = len(strip)    
     for i in range(length):
@@ -254,7 +253,6 @@ def sparkle_out(strip, color, wait = 0.002):
             random_pixels(strip, color, length - x )
             strip.show()
             time.sleep(wait)
-
 
 def rainbow(strip, wait = 0.01, iterations = 1):
    for j in range(255 * iterations):

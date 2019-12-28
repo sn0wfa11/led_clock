@@ -118,13 +118,14 @@ def run_clock(strip):
 
 ### Testing Functions
 def test1(strip):
-    color_chase(strip, RED, wait = 0.005, hold = 0.1)
-    color_chase(strip, ORANGE, wait = 0.005, hold = 0.1)
-    color_chase(strip, YELLOW, wait = 0.005, hold = 0.1)
-    color_chase(strip, GREEN, wait = 0.005, hold = 0.1)
-    color_chase(strip, CYAN, wait = 0.005, hold = 0.1)
-    color_chase(strip, BLUE, wait = 0.005, hold = 0.1)
-    color_chase(strip, PURPLE, wait = 0.005, hold = 0.1)
+    color_chase(strip, RED, wait = 0.005, hold = 0.05)
+    color_chase(strip, ORANGE, wait = 0.005, hold = 0.05)
+    color_chase(strip, YELLOW, wait = 0.005, hold = 0.05)
+    color_chase(strip, GREEN, wait = 0.005, hold = 0.05)
+    color_chase(strip, CYAN, wait = 0.005, hold = 0.05)
+    color_chase(strip, BLUE, wait = 0.005, hold = 0.05)
+    color_chase(strip, PURPLE, wait = 0.005, hold = 0.05)
+    rainbow(strip, wait = 0.01, iterations = 1)
 
     time.sleep(2)
     close_strip(strip)
