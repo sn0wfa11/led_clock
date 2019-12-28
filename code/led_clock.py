@@ -118,6 +118,40 @@ def run_clock(strip):
 
 ### Testing Functions
 def test1(strip):
+    rainbow_fill_flash_chime(strip)
+
+    time.sleep(2)
+    close_strip(strip)
+
+def test2(strip):
+    rainbow_color_chase(strip)
+
+### Hour Chimes
+
+## Select random hour chime
+def random_hour_chime(strip):
+    clear(strip)
+    chime_count = 4
+    selection = randint(1, chime_count)
+    if selection == 1:
+        rainbow_fill_flash_chime(strip)
+    if selection == 2:
+        fireworks(strip, BLUE)
+    if selection == 3:
+        fireworks(strip, GREEN)
+    if selection == 4:
+        rainbow_color_chase(strip)
+
+def rainbow_fill_flash_chime(strip):
+    rainbow_cycle_fill(strip, direction = DIRECTION)
+    flash_bang(strip, WHITE)
+
+def fireworks(strip, color):
+    shoot_up_tail(strip, color, RED)
+    fill_down(strip, color)
+    sparkle_out(strip, color)
+
+def rainbow_color_chase(strip):
     color_chase(strip, RED, wait = 0.005, hold = 0.005, direction = DIRECTION)
     color_chase(strip, ORANGE, wait = 0.005, hold = 0.005, direction = DIRECTION)
     color_chase(strip, YELLOW, wait = 0.005, hold = 0.005, direction = DIRECTION)
@@ -126,35 +160,6 @@ def test1(strip):
     color_chase(strip, BLUE, wait = 0.005, hold = 0.005, direction = DIRECTION)
     color_chase(strip, PURPLE, wait = 0.005, hold = 0.005, direction = DIRECTION)
     rainbow(strip, wait = 0.01, iterations = 1)
-
-    time.sleep(2)
-    close_strip(strip)
-
-def test2(strip):
-    rainbow_fill_flash_chime(strip)
-
-### Hour Chimes
-
-## Select random hour chime
-def random_hour_chime(strip):
-    clear(strip)
-    chime_count = 3
-    selection = randint(1, chime_count)
-    if selection == 1:
-        rainbow_fill_flash_chime(strip)
-    if selection == 2:
-        fireworks(strip, BLUE)
-    if selection == 3:
-        fireworks(strip, GREEN)
-
-def rainbow_fill_flash_chime(strip):
-    rainbow_cycle_fill(strip)
-    flash_bang(strip, WHITE)
-
-def fireworks(strip, color):
-    shoot_up_tail(strip, color, RED)
-    fill_down(strip, color)
-    sparkle_out(strip, color)
 
 def parse_args(args, parser):
     global ORIGIN, DIRECTION, TEST

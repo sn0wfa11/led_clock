@@ -269,13 +269,15 @@ def rainbow_cycle(strip, wait = 0.01, iterations = 1):
         strip.show()
         time.sleep(wait)
 
-def rainbow_cycle_fill(strip, wait = 0.0000001, iterations = 1):
+def rainbow_cycle_fill(strip, wait = 0.0000001, iterations = 1, direction = 1):
     length = len(strip)
     for x in range(length):
         for j in range(0, 255 * iterations, 3):
             for i in range(x):
-                i = (i + (length // 2)) % length
-                rc_index = (i * 256 // len(strip)) + j
-                strip[i] = wheel(rc_index & 255)
+                pixel = (i + (length // 2)) % length
+                rc_index = (pixel * 256 // len(strip)) + j
+                if direction != 1:
+                    pixel = (length - pixel) % length
+                strip[pixel] = wheel(rc_index & 255)
             strip.show()
             time.sleep(wait)
