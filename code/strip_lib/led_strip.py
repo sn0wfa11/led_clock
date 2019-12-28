@@ -149,7 +149,7 @@ def stagger_chase_counterclockwise(strip, color, seperation = 3, iterations = 2,
             time.sleep(wait)
 
         
-def color_chase(strip, color, wait = 0.01, direction = 1):
+def color_chase(strip, color, wait = 0.01, hold = 0.5, direction = 1):
     length = len(strip)    
     for i in range(length):
         pixel = (i + (length // 2)) % length
@@ -158,7 +158,7 @@ def color_chase(strip, color, wait = 0.01, direction = 1):
         strip[pixel] = color
         time.sleep(wait)
         strip.show()
-    time.sleep(0.5)
+    time.sleep(hold)
 
 def shoot_up(strip, color, wait = 0.1):
     length = len(strip)
