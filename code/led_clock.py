@@ -118,13 +118,19 @@ def run_clock(strip):
 
 ### Testing Functions
 def test1(strip):
+    color_chase(strip, RED, wait = 0.01)
+    color_chase(strip, ORANGE, wait = 0.01, direction = 2)
+    color_chase(strip, YELLOW, wait = 0.01)
+    color_chase(strip, GREEN, wait = 0.01, direction = 2)
     color_chase(strip, BLUE, wait = 0.01)
-    color_chase(strip, RED, wait = 0.01, direction = 2)
+    color_chase(strip, PURPLE, wait = 0.01, direction = 2)
+    color_chase(strip, CYAN, wait = 0.01)
+
     time.sleep(2)
     close_strip(strip)
 
 def test2(strip):
-    fireworks(strip, GREEN)
+    rainbow_fill_flash_chime(strip):
 
 ### Hour Chimes
 
