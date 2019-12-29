@@ -88,9 +88,6 @@ def show_time(strip):
         strip[shift(minutes)] = M_HAND
         strip[shift(seconds)] = S_HAND
     
-    #if seconds == 0: # Chime testing
-    #    random_hour_chime(strip)
-    
     strip.show()
     time.sleep(0.1)
 
@@ -119,9 +116,6 @@ def run_clock(strip):
 ### Testing Functions
 def test1(strip):
     rainbow_fill_flash_chime(strip)
-
-    time.sleep(2)
-    close_strip(strip)
 
 def test2(strip):
     rainbow_color_chase(strip)
