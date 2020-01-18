@@ -18,8 +18,11 @@ cd /root/git
 git clone https://github.com/sn0wfa11/led_clock
 ```
 
-### Make symbolic Link to the service
-`ln -s /root/git/led_clock/code/led_clock /etc/init.d/led_clock`
+### Make symbolic Links for the service
+```
+ln -s /root/git/led_clock/code/led_clock /etc/init.d/led_clock
+ln -s /etc/init.d/led_clock /usr/bin/led_clock
+```
 
 ### Start the clock service
 `/etc/init.d/led_clock start`
