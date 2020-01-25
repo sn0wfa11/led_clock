@@ -7,6 +7,7 @@ try:
     import subprocess as sub
     import sys
     import signal
+    import argparse
     from random import randint
 
     from strip_lib.led_strip import *
@@ -18,6 +19,11 @@ STRIP_SIZE = 60
 PI_PIN = board.D18
 ORDER = neopixel.GRB
 BRIGHTNESS = 0.8
+
+global ORIGIN, DIRECTION, TEST
+ORIGIN = 30 # Set the default 12-o-clock position
+DIRECTION = 1 # Set the default direction - 1 = 0 -> length, 2 = length -> 0
+TEST = 0
 
 ## Clock Colors
 H_HAND = GREEN
@@ -36,7 +42,9 @@ def sigterm_handler(signal, frame):
 
 signal.signal(signal.SIGTERM, sigterm_handler)
 
-## Clock Functions
+### Clock Functions
+
+## Get time from OS
 def get_time():
   out, error = sub.Popen(["date +'%I %M %S'"], stdout=sub.PIPE, stderr=sub.PIPE, shell=True).communicate()
   time_raw = out.decode('utf-8').strip().split(' ')
@@ -45,9 +53,15 @@ def get_time():
   seconds = int(time_raw[2])
   return (hours, minutes, seconds)
 
+## Adjust clock based on ORIGIN pixel and clock direction
 def shift(pixel):
-    return (pixel + (STRIP_SIZE // 2)) % STRIP_SIZE
+    out_pixel = (pixel + ORIGIN) % STRIP_SIZE
+    if DIRECTION == 2:
+        return (STRIP_SIZE - out_pixel) % STRIP_SIZE
+    else:
+        return out_pixel
 
+## Show the time on the clock
 def show_time(strip):
     clear(strip)
     hours, minutes, seconds = get_time()
@@ -74,9 +88,6 @@ def show_time(strip):
         strip[shift(minutes)] = M_HAND
         strip[shift(seconds)] = S_HAND
     
-    #if seconds == 0: # Chime testing
-    #    random_hour_chime(strip)
-    
     strip.show()
     time.sleep(0.1)
 
@@ -92,10 +103,29 @@ def min_sec_match(strip, pixel):
 def full_match(strip, pixel):
     strip[shift(pixel)] = FULL_MATCH
 
-## Hour Chimes
+## Main clock loop
+def run_clock(strip):
+    if TEST == 1:
+        test1(strip)
+    if TEST == 2:
+        test2(strip)
+    else:
+        while True:
+            show_time(strip)
+
+### Testing Functions
+def test1(strip):
+    rainbow_fill_flash_chime(strip)
+
+def test2(strip):
+    rainbow_color_chase(strip)
+
+### Hour Chimes
+
+## Select random hour chime
 def random_hour_chime(strip):
     clear(strip)
-    chime_count = 3
+    chime_count = 4
     selection = randint(1, chime_count)
     if selection == 1:
         rainbow_fill_flash_chime(strip)
@@ -103,34 +133,54 @@ def random_hour_chime(strip):
         fireworks(strip, BLUE)
     if selection == 3:
         fireworks(strip, GREEN)
+    if selection == 4:
+        rainbow_color_chase(strip)
 
 def rainbow_fill_flash_chime(strip):
-    rainbow_cycle_fill(strip)
+    rainbow_cycle_fill(strip, direction = DIRECTION)
     flash_bang(strip, WHITE)
 
 def fireworks(strip, color):
-    shoot_up_tail(clock, color, RED)
+    shoot_up_tail(strip, color, RED)
     fill_down(strip, color)
     sparkle_out(strip, color)
 
-def test(strip):
-    #fireworks(strip, rand_color())
-    stagger_chase_clockwise(strip, RED, 5, 5)
-    stagger_chase_counterclockwise(strip, RED, 5, 5)
-    time.sleep(2)
-    close_strip(strip)
+def rainbow_color_chase(strip):
+    color_chase(strip, RED, wait = 0.005, hold = 0.005, direction = DIRECTION)
+    color_chase(strip, ORANGE, wait = 0.005, hold = 0.005, direction = DIRECTION)
+    color_chase(strip, YELLOW, wait = 0.005, hold = 0.005, direction = DIRECTION)
+    color_chase(strip, GREEN, wait = 0.005, hold = 0.005, direction = DIRECTION)
+    color_chase(strip, CYAN, wait = 0.005, hold = 0.005, direction = DIRECTION)
+    color_chase(strip, BLUE, wait = 0.005, hold = 0.005, direction = DIRECTION)
+    color_chase(strip, PURPLE, wait = 0.005, hold = 0.005, direction = DIRECTION)
+    rainbow(strip, wait = 0.01, iterations = 1)
 
-def run_clock(strip):
-    while True:
-        show_time(strip)
+def parse_args(args, parser):
+    global ORIGIN, DIRECTION, TEST
+
+    if args.origin:
+        ORIGIN = args.origin
+
+    if args.direction:
+        DIRECTION = args.direction
+
+    if args.test:
+        TEST = args.test
 
 # Ref to main function
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description = "3D Printed LED Clock.")
+    parser.add_argument("-o", "--origin", type = int, help = "Origin Pixel - ie. The twelve-o-clock position. Default = 30")
+    parser.add_argument("-d", "--direction", type = int, choices = [1, 2], help = "Pixel direction: 1 = positive, 2 = negative. Switch if your clock is going the wrong way. Default = 1")
+    parser.add_argument("-t", "--test", type = int, help = "Test Cycle - Testing only.")
+
+    args = parser.parse_args()
+    parse_args(args, parser)
+
     try:
         clock = neopixel.NeoPixel(PI_PIN, STRIP_SIZE, brightness=BRIGHTNESS, auto_write=False, pixel_order=ORDER)
         run_clock(clock)
-        #test(clock)
-        
+        close_strip(clock)
     except KeyboardInterrupt:
         print("\n\n[*] Exiting...")
         close_strip(clock)

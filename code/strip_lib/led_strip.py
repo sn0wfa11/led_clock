@@ -148,15 +148,16 @@ def stagger_chase_counterclockwise(strip, color, seperation = 3, iterations = 2,
             strip.show()
             time.sleep(wait)
 
-        
-def color_chase(strip, color, wait = 0.01):
-    length = len(strip)
+def color_chase(strip, color, wait = 0.01, hold = 0.5, direction = 1):
+    length = len(strip)    
     for i in range(length):
         pixel = (i + (length // 2)) % length
+        if direction != 1:
+            pixel = (length - pixel) % length
         strip[pixel] = color
         time.sleep(wait)
         strip.show()
-    time.sleep(0.5)
+    time.sleep(hold)
 
 def shoot_up(strip, color, wait = 0.1):
     length = len(strip)
@@ -253,7 +254,6 @@ def sparkle_out(strip, color, wait = 0.002):
             strip.show()
             time.sleep(wait)
 
-
 def rainbow(strip, wait = 0.01, iterations = 1):
    for j in range(255 * iterations):
       for i in range(len(strip)):
@@ -269,13 +269,15 @@ def rainbow_cycle(strip, wait = 0.01, iterations = 1):
         strip.show()
         time.sleep(wait)
 
-def rainbow_cycle_fill(strip, wait = 0.0000001, iterations = 1):
+def rainbow_cycle_fill(strip, wait = 0.0000001, iterations = 1, direction = 1):
     length = len(strip)
     for x in range(length):
         for j in range(0, 255 * iterations, 3):
             for i in range(x):
-                i = (i + (length // 2)) % length
-                rc_index = (i * 256 // len(strip)) + j
-                strip[i] = wheel(rc_index & 255)
+                pixel = (i + (length // 2)) % length
+                rc_index = (pixel * 256 // len(strip)) + j
+                if direction != 1:
+                    pixel = (length - pixel) % length
+                strip[pixel] = wheel(rc_index & 255)
             strip.show()
             time.sleep(wait)
